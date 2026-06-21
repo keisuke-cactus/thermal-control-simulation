@@ -26,7 +26,17 @@
 
 ## 結果
 
-（ここに記載）
+## 結果
+
+### Fig.1 Temperature Response with Fixed Heater Output
+
+![Fig.1](fixed_output_temperature_response.png)
+
+3つのヒーターに500Wの一定出力を与えた場合の温度応答をシミュレーションした。
+
+その結果、中央のZone2は両側のゾーンから熱伝導による熱流入を受けるため、Zone1およびZone3より高温となった。
+
+この結果から、複数ヒーターを独立に駆動した場合でも、熱干渉によって温度分布に偏りが生じることを確認した。
 
 ## 考察
 
