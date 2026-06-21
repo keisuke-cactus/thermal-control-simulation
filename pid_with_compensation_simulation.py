@@ -80,7 +80,25 @@ def simulate_pid_control():
         + Ki * integral_error
         + Kd * derivative_error
         )
+        # =====================================
+        # Thermal Interference Compensation
+        # =====================================
+
+        T12 = T2 - T1
+        T23 = T3 - T2
+
+        B1 = 4
+        B2 = 4
         
+        compensation = np.array([
+            -B1 * T12,
+            B1 * T12 - B2 * T23,
+            B2 * T23
+        ])
+
+        heater_output = heater_output + compensation
+
+
         heater_output = np.clip(heater_output, heater_min, heater_max)
         heater_history[i, :] = heater_output
         previous_error = error
@@ -143,11 +161,11 @@ def plot_pid_control_result():
 
     plt.xlabel("Time [min]")
     plt.ylabel("Temperature [degC]")
-    plt.title("Fig.6 Temperature Response with Zone 2 Disturbance")
+    plt.title("Fig.8 Temperature Response with PID Control and Thermal Compensation")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("pid_disturbance_temperature_response.png", dpi=300)
+    plt.savefig("pid_compensation_temperature_response.png", dpi=300)
     plt.show()
     # =====================================
     # Plot heater output
@@ -159,11 +177,11 @@ def plot_pid_control_result():
 
     plt.xlabel("Time [min]")
     plt.ylabel("Heater output [W]")
-    plt.title("Fig.7 Heater Output with PID Control under Zone 2 Disturbance")
+    plt.title( "Fig.9 Heater Output with PID Control and Thermal Compensation")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("pid_disturbance_heater_output", dpi=300)
+    plt.savefig( "pid_compensation_heater_output.png", dpi=300)
     plt.show()
 
 
