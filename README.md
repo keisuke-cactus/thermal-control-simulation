@@ -27,7 +27,15 @@
 ## 結果
 
 ## 結果
+## 物理パラメータ
 
+| Parameter | Value | Unit |
+|------------|------------|------------|
+| Heater Output | 500 | W |
+| Density | 9000 | kg/m³ |
+| Specific Heat | 176 | J/(kg·K) |
+| Thermal Conductivity | 49 | W/(m·K) |
+| Ambient Temperature | 25 | °C |
 ### Fig.1 Temperature Response with Fixed Heater Output
 
 ![Fig.1](fixed_output_temperature_response.png)
