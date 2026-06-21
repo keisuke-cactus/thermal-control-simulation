@@ -1,46 +1,37 @@
-# Multi-Zone Thermal Control Simulation
+# Thermal System Modeling for Temperature Uniformity
 
-## Overview
+## 概要
 
-This repository demonstrates a simple thermal control simulation using Python.
 
-The model represents multiple thermal zones connected through heat transfer. Each zone is controlled independently using PID control while considering thermal interference from neighboring zones.
+## 背景
+長尺半田槽では複数ヒーターを配置して温度均一化を行う。しかし、各制御ブロック間には熱伝導による相互作用が存在し、独立したPID制御のみでは温度分布が不安定になる懸念があった。
 
-The purpose of this project is to demonstrate modeling, simulation, and control of a distributed thermal system.
+## 目的
 
----
+隣同士の温度干渉をモデル化した制御プログラムを構築し、長尺半田槽温度を均一化する。
 
-## Features
+## 要求仕様
 
-- Multi-zone thermal model
-- Heat transfer between neighboring zones
-- PID control
-- Time-series simulation
-- Temperature response visualization
+半田温度　320℃±20℃
+半田交換後30分以内に安定化
+外乱（製品親戚による温度低下）発生後＿分以内に温度が収束
 
----
+## 方法
 
-## Model
+### 温度制御方式検討
 
-Each zone temperature is represented by:
+### 熱モデル構築
 
-dT/dt = Heater Input + Heat Transfer - Heat Loss
+### 制御アルゴリズム
 
-Heat transfer between adjacent zones is considered in the model.
+## 結果
 
----
+（ここに記載）
 
-## Purpose
+## 考察
 
-This project is intended for educational and portfolio purposes only.
+（ここに記載）
 
-All parameters are hypothetical and do not represent any specific product, equipment, or proprietary technology.
+## 今後の展開
 
----
-
-## Future Work
-
-- State-space representation
-- Model Predictive Control (MPC)
-- Parameter optimization
-- Multi-variable control
+（ここに記載）

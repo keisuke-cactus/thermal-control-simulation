@@ -1,66 +1,110 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# simulation time
-dt = 0.1
-t_end = 100
-time = np.arange(0, t_end, dt)
 
-# temperatures
-T1 = np.zeros(len(time))
-T2 = np.zeros(len(time))
-T3 = np.zeros(len(time))
+def simulate_fixed_output():
+    # =====================================
+    # Simulation Settings
+    # =====================================
+    dt = 1.0                 # Time step [s]
+    t_end = 10000            # Simulation time [s]
+    time = np.arange(0, t_end + dt, dt)
 
-# initial temperature
-T1[0] = 25
-T2[0] = 25
-T3[0] = 25
+    # =====================================
+    # Physical Parameters
+    # =====================================
 
-# target temperature
-target = 80
+    # Solder properties
+    rho = 9000.0             # Density [kg/m3]
+    cp = 176.0               # Specific heat [J/(kg*K)]
 
-# PID gains
-Kp = 2.0
-Ki = 0.05
+    # Geometry of each thermal zone
+    volume = 1.0e-3          # Volume [m3]
+    surface_area_edge = 5.0e-2      # Effective surface area of edge zones [m2]
+    surface_area_center = 4.0e-2    # Effective surface area of center zone [m2]
+    conduction_area = 1.0e-2        # Contact area between adjacent zones [m2]
+    block_length = 0.1              # Distance between adjacent zones [m]
 
-integral1 = 0
-integral2 = 0
-integral3 = 0
+    # Environment
+    ambient = 25.0           # Ambient temperature [degC]
 
-# heat transfer coefficient
-k = 0.05
+    # Heater input
+    heater_output = np.array([500.0, 500.0, 500.0])  # Heater output [W]
 
-for i in range(len(time)-1):
+    # Heat transfer to ambient air
+    h = 14.5                 # Heat transfer coefficient [W/(m2*K)]
 
-    e1 = target - T1[i]
-    e2 = target - T2[i]
-    e3 = target - T3[i]
+    # Thermal conductivity
+    thermal_conductivity = 49.0  # Thermal conductivity [W/(m*K)]
 
-    integral1 += e1 * dt
-    integral2 += e2 * dt
-    integral3 += e3 * dt
+    # =====================================
+    # Derived Parameters
+    # =====================================
+    mass = rho * volume      # Mass [kg]
+    heat_capacity = mass * cp  # Heat capacity [J/K]
 
-    u1 = Kp * e1 + Ki * integral1
-    u2 = Kp * e2 + Ki * integral2
-    u3 = Kp * e3 + Ki * integral3
+    k_loss_edge = h * surface_area_edge          # [W/K]
+    k_loss_center = h * surface_area_center      # [W/K]
+    k_loss = np.array([k_loss_edge, k_loss_center, k_loss_edge])
 
-    dT1 = u1 + k*(T2[i]-T1[i])
-    dT2 = u2 + k*(T1[i]-T2[i]) + k*(T3[i]-T2[i])
-    dT3 = u3 + k*(T2[i]-T3[i])
+    k_cond = thermal_conductivity * conduction_area / block_length  # [W/K]
 
-    T1[i+1] = T1[i] + dT1*dt
-    T2[i+1] = T2[i] + dT2*dt
-    T3[i+1] = T3[i] + dT3*dt
+    # =====================================
+    # Simulation
+    # =====================================
+    temperature = np.zeros((len(time), 3))
+    temperature[0, :] = ambient
 
-plt.plot(time, T1, label="Zone1")
-plt.plot(time, T2, label="Zone2")
-plt.plot(time, T3, label="Zone3")
+    for i in range(len(time) - 1):
+        T1, T2, T3 = temperature[i, :]
 
-plt.axhline(target, linestyle="--", label="Target")
+        # Zone 1: heater input - heat loss + heat conduction from Zone 2
+        dT1 = (
+            heater_output[0]
+            - k_loss[0] * (T1 - ambient)
+            + k_cond * (T2 - T1)
+        ) / heat_capacity
 
-plt.xlabel("Time")
-plt.ylabel("Temperature")
-plt.legend()
-plt.grid()
+        # Zone 2: heater input - heat loss + heat conduction from Zone 1 and Zone 3
+        dT2 = (
+            heater_output[1]
+            - k_loss[1] * (T2 - ambient)
+            + k_cond * (T1 - T2)
+            + k_cond * (T3 - T2)
+        ) / heat_capacity
 
-plt.show()
+        # Zone 3: heater input - heat loss + heat conduction from Zone 2
+        dT3 = (
+            heater_output[2]
+            - k_loss[2] * (T3 - ambient)
+            + k_cond * (T2 - T3)
+        ) / heat_capacity
+
+        temperature[i + 1, 0] = T1 + dT1 * dt
+        temperature[i + 1, 1] = T2 + dT2 * dt
+        temperature[i + 1, 2] = T3 + dT3 * dt
+
+    return time, temperature
+
+
+def plot_fixed_output_result():
+    time, temperature = simulate_fixed_output()
+    time_min = time / 60
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(time_min, temperature[:, 0], label="Zone 1")
+    plt.plot(time_min, temperature[:, 1], label="Zone 2")
+    plt.plot(time_min, temperature[:, 2], label="Zone 3")
+
+    plt.xlabel("Time [min]")
+    plt.ylabel("Temperature [degC]")
+    plt.title("Fig.1 Temperature Response with Fixed Heater Output")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("fixed_output_temperature_response.png", dpi=300)
+    plt.show()
+
+
+if __name__ == "__main__":
+    plot_fixed_output_result()
