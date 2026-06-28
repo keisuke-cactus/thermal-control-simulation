@@ -36,7 +36,7 @@ def simulate_pid_control():
     Kp = np.array([8.0, 8.0, 8.0])
 
     # Integral gain [W/(degC*s)]
-    Ki = np.array([0.003, 0.003, 0.003])
+    Ki = np.array([0.001, 0.001, 0.001])
 
     # Derivative gain [W*s/degC]
     Kd = np.array([150.0, 150.0, 150.0])
@@ -143,11 +143,10 @@ def plot_pid_control_result():
 
     plt.xlabel("Time [min]")
     plt.ylabel("Temperature [degC]")
-    plt.title("Fig.6 Temperature Response with Zone 2 Disturbance")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("pid_disturbance_temperature_response.png", dpi=300)
+    plt.savefig("images/fig7_pid_disturbance_temperature_response.png", dpi=300)
     plt.show()
     # =====================================
     # Plot heater output
@@ -159,11 +158,10 @@ def plot_pid_control_result():
 
     plt.xlabel("Time [min]")
     plt.ylabel("Heater output [W]")
-    plt.title("Fig.7 Heater Output with PID Control under Zone 2 Disturbance")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("pid_disturbance_heater_output", dpi=300)
+    plt.savefig("images/fig8_pid_disturbance_heater_output.png", dpi=300)
     plt.show()
 
 

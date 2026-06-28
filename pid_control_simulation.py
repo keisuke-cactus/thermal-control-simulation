@@ -36,7 +36,7 @@ def simulate_pid_control():
     Kp = np.array([8.0, 8.0, 8.0])
 
     # Integral gain [W/(degC*s)]
-    Ki = np.array([0.003, 0.003, 0.003])
+    Ki = np.array([0.001, 0.001, 0.001])
 
     # Derivative gain [W*s/degC]
     Kd = np.array([150.0, 150.0, 150.0])
@@ -54,8 +54,6 @@ def simulate_pid_control():
 
     # Previous error for derivative control
     previous_error = target_temperature - temperature[0, :]
-
-    # Inte
 
     for i in range(len(time) - 1):
         T1, T2, T3 = temperature[i, :]
@@ -136,12 +134,13 @@ def plot_pid_control_result():
 
     plt.xlabel("Time [min]")
     plt.ylabel("Temperature [degC]")
-    plt.title("Fig.4 Temperature Response with PID Control")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("pid_control_temperature_response.png", dpi=300)
-    plt.show()
+    plt.savefig(
+    "images/fig5_pid_control_temperature_response.png",
+    dpi=300
+)
     # =====================================
     # Plot heater output
     # =====================================
@@ -152,11 +151,10 @@ def plot_pid_control_result():
 
     plt.xlabel("Time [min]")
     plt.ylabel("Heater output [W]")
-    plt.title("Fig.5 Heater Output with PID Control")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("pid_heater_output.png", dpi=300)
+    plt.savefig("images/fig6_pid_heater_output.png", dpi=300)
     plt.show()
 
 

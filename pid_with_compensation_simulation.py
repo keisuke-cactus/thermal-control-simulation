@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def simulate_pid_control():
+def  simulate_pid_control_with_gain(B=1.0):
     dt = 1.0
     t_end = 10000
     time = np.arange(0, t_end + dt, dt)
@@ -36,7 +36,7 @@ def simulate_pid_control():
     Kp = np.array([8.0, 8.0, 8.0])
 
     # Integral gain [W/(degC*s)]
-    Ki = np.array([0.003, 0.003, 0.003])
+    Ki = np.array([0.001, 0.001, 0.001])
 
     # Derivative gain [W*s/degC]
     Kd = np.array([150.0, 150.0, 150.0])
@@ -87,8 +87,8 @@ def simulate_pid_control():
         T12 = T2 - T1
         T23 = T3 - T2
 
-        B1 = 4
-        B2 = 4
+        B1 = B
+        B2 = B
         
         compensation = np.array([
             -B1 * T12,
@@ -148,9 +148,16 @@ def simulate_pid_control():
 
     return time, temperature, heater_history
 
+# =====================================
+# Default simulation (B = 1.0)
+# Used by other Python programs
+# =====================================
+def simulate_pid_control():
+    return simulate_pid_control_with_gain(B=1.0)
+
 
 def plot_pid_control_result():
-    time, temperature, heater_history = simulate_pid_control()
+    time, temperature, heater_history =  simulate_pid_control_with_gain(B=1.0)
     time_min = time / 60
 
     plt.figure(figsize=(10, 6))
@@ -161,11 +168,10 @@ def plot_pid_control_result():
 
     plt.xlabel("Time [min]")
     plt.ylabel("Temperature [degC]")
-    plt.title("Fig.8 Temperature Response with PID Control and Thermal Compensation")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("pid_compensation_temperature_response.png", dpi=300)
+    plt.savefig("images/fig9_pid_compensation_temperature_response.png", dpi=300)
     plt.show()
     # =====================================
     # Plot heater output
@@ -177,11 +183,10 @@ def plot_pid_control_result():
 
     plt.xlabel("Time [min]")
     plt.ylabel("Heater output [W]")
-    plt.title( "Fig.9 Heater Output with PID Control and Thermal Compensation")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig( "pid_compensation_heater_output.png", dpi=300)
+    plt.savefig( "images/fig10_pid_compensation_heater_output.png", dpi=300)
     plt.show()
 
 
