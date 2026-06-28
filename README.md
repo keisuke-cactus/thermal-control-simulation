@@ -121,11 +121,13 @@ This project demonstrates the complete workflow of thermal system modeling, PID 
 Zone 1 のエネルギー保存則を以下に示す。
 
 $$
+\begin{aligned}
 C \frac{dT_1}{dt}
-=
+&=
 Q_1
 -k_{loss,1}(T_1-T_{amb})
 +k_{cond}(T_2-T_1)
+\end{aligned}
 $$
 
 Zone 1：右側ゾーンとの熱伝導のみ
@@ -135,11 +137,14 @@ Zone 1：右側ゾーンとの熱伝導のみ
 Zone 2 のエネルギー保存則を以下に示す。
 
 $$
+\begin{aligned}
 C \frac{dT_2}{dt}
-=
-Q_2-k_{loss,2}(T_2-T_{amb})
+&=
+Q_2
+-k_{loss,2}(T_2-T_{amb})
 +k_{cond}(T_1-T_2)
 +k_{cond}(T_3-T_2)
+\end{aligned}
 $$
 
 Zone 2：左右両側ゾーンとの熱伝導
@@ -149,10 +154,13 @@ Zone 2：左右両側ゾーンとの熱伝導
 Zone 3 のエネルギー保存則を以下に示す。
 
 $$
+\begin{aligned}
 C \frac{dT_3}{dt}
-=
-Q_3-k_{loss,3}(T_3-T_{amb})
+&=
+Q_3
+-k_{loss,3}(T_3-T_{amb})
 +k_{cond}(T_2-T_3)
+\end{aligned}
 $$
 
 Zone 3：左側ゾーンとの熱伝導のみ
