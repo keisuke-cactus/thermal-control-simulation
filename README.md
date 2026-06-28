@@ -107,11 +107,7 @@ This project demonstrates the complete workflow of thermal system modeling, PID 
 Zone 1 のエネルギー保存則を以下に示す。
 
 $$
-C \frac{dT_1}{dt}
-=
-Q_1
--k_{loss,1}(T_1-T_{amb})
-+k_{cond}(T_2-T_1)
+C \frac{dT_1}{dt}=Q_1-k_{loss,1}(T_1-T_{amb})+k_{cond}(T_2-T_1)
 $$
 Zone 1：右側ゾーンとの熱伝導のみ
 ### Zone 2
@@ -119,12 +115,7 @@ Zone 1：右側ゾーンとの熱伝導のみ
 Zone 2 のエネルギー保存則を以下に示す。
 
 $$
-C \frac{dT_2}{dt}
-=
-Q_2
--k_{loss,2}(T_2-T_{amb})
-+k_{cond}(T_1-T_2)
-+k_{cond}(T_3-T_2)
+C \frac{dT_2}{dt}=Q_2-k_{loss,2}(T_2-T_{amb})+k_{cond}(T_1-T_2)+k_{cond}(T_3-T_2)
 $$
 Zone 2：左右両側ゾーンとの熱伝導
 ### Zone 3
@@ -132,11 +123,7 @@ Zone 2：左右両側ゾーンとの熱伝導
 Zone 3 のエネルギー保存則を以下に示す。
 
 $$
-C \frac{dT_3}{dt}
-=
-Q_3
--k_{loss,3}(T_3-T_{amb})
-+k_{cond}(T_2-T_3)
+C \frac{dT_3}{dt}=Q_3-k_{loss,3}(T_3-T_{amb})+k_{cond}(T_2-T_3)
 $$
 Zone 3：左側ゾーンとの熱伝導のみ
 ### 記号一覧
@@ -207,13 +194,7 @@ Zone 3：左側ゾーンとの熱伝導のみ
 PID制御器は次式で表される。
 
 $$
-u(t)
-=
-K_P e(t)
-+
-K_I \int e(t)dt
-+
-K_D \frac{de(t)}{dt}
+u(t)=K_P e(t)+K_I \int e(t)dt+K_D \frac{de(t)}{dt}
 $$
 
 ここで、
